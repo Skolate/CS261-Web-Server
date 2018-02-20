@@ -1,0 +1,94 @@
+<html>
+<head>
+<title>My Local WebServer</title>
+<!-- <script type="text/javascript" src ="js/r.js"></script> -->
+<!-- <script type="text/javascript" src="js/index.js"></script> -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
+<script>
+    var socket = io(); // Initialises the socket
+
+    // Recieves from the server on connections and responds
+    socket.on('welcome', function(data) {
+        addMessage(data.message);   // Updating HTML
+        socket.emit('i am client', {data: 'heyo', id: data.id});
+    });
+
+    // Recieving emit from the server
+    socket.on('time', function(data) {
+        addMessage(data.time);
+    });
+
+    // Sends the text in the textarea item to the server for processing by Dialogflow (Sent using socket.io)
+    function sendQuery() {
+      var text = document.getElementById('query').value;
+      document.getElementById('query').value = "Query sent!";
+      socket.emit('send query', {query: text});
+    }
+
+    // Function to add the 'message' to the page, by updating the HTML using the usual Javascript code.
+    function addMessage(message) {
+        var text = document.createTextNode(message),
+        el = document.createElement('li'),
+        messages = document.getElementById('messages');
+
+        el.appendChild(text);
+        messages.appendChild(el);
+    }
+
+    // Initialising the HTML5 speech recognition module
+    var recognition = new webkitSpeechRecognition();
+    var recognising = false;
+    var finalTranscript = '';
+    recognition.continuous = true;  // Can return multiple results, as many as possible until manually stopped
+    recognition.lang = "en-US";
+    recognition.interimResults = true;
+
+    recognition.onstart = function() {
+        recognising = true;
+    };
+    recognition.onerror = function(event) {
+        console.log(event.error);
+    };
+
+    // Performed when something has been heard by the API
+    recognition.onresult = function(event) {
+        var interimTranscript = ''; // Stores the temperary data
+        for (var i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+                finalTranscript += event.results[i][0].transcript;
+                document.getElementById('query').value = finalTranscript;
+            } else {
+                interimTranscript += event.results[i][0].transcript;
+            }
+            document.getElementById('query').value = interimTranscript;
+        }
+        console.log(finalTranscript);
+    };
+
+    // Called to start / stop the recording process
+    function startDictation(event) {
+        if (recognising) {
+            recognition.stop();
+        }
+        finalTranscript = '';
+        recognition.start();
+        console.log('Recording started');
+    }
+
+    // Adding the text result to the HTML to display on screen
+    var output = document.getElementById('output');
+
+</script>
+</head>
+<body>
+<h1>Web speech recognition testing</h1>
+
+<div id="output"></div>
+<button onclick="startDictation(event)">Start/Stop Listening</button>
+
+<textarea id='query' rows = "2" cols = "50">Example query</textarea>
+<button onclick="sendQuery()">Submit</button>
+
+<ul id = 'messages'></ul>
+</body>
+</html>
