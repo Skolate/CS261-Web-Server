@@ -1,428 +1,897 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <title> ChatBot </title>
-
-  <link rel="stylesheet" href="design.css" type="text/css" charset="utf-8">
-
-  <!-- http://materializecss.com/getting-started.html -->
-
-  <!-- Website is optimized for mobile -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <!-- Google Icon Font -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- Materialize CSS file -->
-  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-
-  <!-- jQuery -->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <!-- Materialize JavaScript file -->
-  <script type="text/javascript" src="js/materialize.min.js"></script>
-
-</head>
-
-<body style="background-color: #272626">
-
-  <script>
-  $(document).ready(function() {
-    $('.modal').modal();
-  });
-  </script>
-
-  <div class="container" style="margin-top: 30px;">
-    <div class="row">
-      <div class="center-align">
-        <a class="waves-effect waves-light btn modal-trigger"
-        style="background-color: #393939" href="#favourites-modal">
-          <i class="material-icons left">star</i>
-          Favourites
-        </a>
-        <a class="waves-effect waves-light btn modal-trigger"
-        style="background-color: #393939" href="#settings-modal">
-          <i class="material-icons">settings</i>
-        </a>
-        <a class="waves-effect waves-light btn modal-trigger"
-        style="background-color: #393939" href="#groups-modal">
-          <i class="material-icons left">list</i>
-          Groups
-        </a>
-      </div>
-    </div>
-    <div class="row center-align">
-      <div class="input-field" style="color: white;">
-        <input
-        id="query" type="text">
-        <label for="query">Query</label>
-      </div>
-    </div>
-  </div>
-
-  <div id="console"
-  class="container z-depth-3"
-  style="height: 77vh;
-  background-color: #393939;
-  padding-left: 30px; padding-right: 30px;
-  padding-top: 10px">
-
-  <div class="row"
-  style="margin-bottom: 1px">
-  <div class="card" style="background-color: #272626">
-    <div class="card-content white-text">
-      12:03
-      <span class="card-title">SSE Stock Price: £1205</span>
-    </div>
-  </div>
-  </div>
-
-  <div class="row"
-  style="margin-bottom: 1px">
-<div class="card" style="background-color: #272626">
-  <div class="card-content white-text">
-    11:55
-    <span class="card-title">The news on Severn Tren seem to be positive</span>
-    <p><a href="#" style="font-size: 20px; text-decoration: underline">
-      Why Dividend Hunters Love Severn Trent Plc
-    </a></p>
-    <p><a href="#" style="font-size: 20px; text-decoration: underline">
-      Grab Severn Trent Plc Today With a Solid 4.41% Dividend Yield
-    </p></a>
-  </div>
-</div>
-</div>
-</div>
-
-
-<!-- ==================== MODALS ==================== -->
-
-<!-- ==================== FAVOURITES ==================== -->
-
-<div id="favourites-modal" class="modal" style="background-color: #272626">
-    <div class="modal-content">
-      <div class="container row">
-    <div class="input-field">
-      <input type="text"
-      id="autocomplete-input"
-      class="autocomplete"
-      style="color: white"
-      placeholder="Add favourite company">
-      <a class="waves-effect waves-light btn" style="background-color: #393939">
-        <i class="material-icons left">add</i>
-        Add</a>
-
-      <!-- <label for="autocomplete-input">Autocomplete</label> -->
-    </div>
-  </div>
-
-  <div class="container">
-  <ul class="collection with-header">
-    <li class="collection-header"><h4>Favourite Companies</h4></li>
-    <li class="collection-item">
-      <div>BP.<a href="#!" class="secondary-content">
-      <i class="material-icons" style="color: #393939">delete</i>
-      <i class="material-icons" style="color: #393939">edit</i>
-    </a></div></li>
-    <li class="collection-item">
-      <div>RDS<a href="#!" class="secondary-content">
-        <i class="material-icons" style="color: #393939">delete</i>
-        <i class="material-icons" style="color: #393939">edit</i>
-    </a></div></li>
-    <li class="collection-item">
-      <div>III<a href="#!" class="secondary-content">
-        <i class="material-icons" style="color: #393939">delete</i>
-        <i class="material-icons" style="color: #393939">edit</i>
-      </a></div></li>
-  </ul>
-  </div>
-  </div>
-  <div class="modal-footer" style="background-color: #272626">
-    <a href="#!" class="modal-action modal-close waves-effect
-     waves-light btn-flat" style="color: white"> Close </a>
-  </div>
-</div>
-
-
-<!-- ==================== SETTINGS ==================== -->
-
-<div id="settings-modal" class="modal" style="background-color: #272626">
-    <div class="modal-content">
-      <script>
-      $(document).ready(function() {
-        $('select').material_select();
-      });
-      </script>
-
-      <script>
-    function saveChanges() {
-      var settings = new Object();
-      if ($('#lever_changes').is(':checked')) settings.lever_changes = 'on';
-      else settings.lever_changes = 'off';
-
-      if ($('#lever_colour').is(':checked')) settings.lever_changes = 'on';
-      else settings.lever_colour = 'off';
-
-      settings.query_history = $('#query_history').val();
-      settings.voice = $('#voice option:selected').text();
-      settings.favourites = $('#favourites option:selected').text();
-      settings.groups = $('#groups option:selected').text();
-      settings.settings = $('#settings option:selected').text();
-
-      if ($('#lever_scheme').is(':checked')) settings.lever_scheme = 'on';
-      else settings.lever_scheme = 'off';
-
-      if ($('#lever_buttons').is(':checked')) settings.lever_buttons = 'on';
-      else settings.lever_buttons = 'off';
-
-      settings.font_size = $('#font_size option:selected').text();
-
-
-    }
-  </script>
-
-      <!-- <h1 class="center-align" style="color: white"> Settings </h1> -->
-      <div class="container">
-        <div class="section">
-          <h3 class="dark_text"> General </h3>
-          <div class="divider"></div>
-
-          <div class="row">
-            <div class="col">
-              <div class="switch valign-wrapper">
-                <span class="flow-text " style="color: white">
-                  Prompt about important changes </span>
-                  <label>
-                    <input type="checkbox" id="lever_changes">
-                    <span class="lever"></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col">
-                <div class="switch valign-wrapper">
-                  <span class="flow-text " style="color: white">
-                    Dark colour scheme </span>
-                    <label>
-                      <input type="checkbox" id="lever_colour">
-                      <span class="lever"></span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row valign-wrapper">
-                <div class="col">
-                  <span class="flow-text " style="color: white">
-                    Days for which query history is stored </span>
-                  </div>
-
-                  <div class="col input-field">
-                    <input value="14"
-                    min="7"
-                    max="30"
-                    class="flow-text dark_text"
-                    type="number"
-                    id="query_history">
-                    <!-- <label class="active" for="first_name2">First Name</label> -->
-                  </div>
-                </div>
-              </div>
-
-              <div class="section">
-                <h3 class="dark_text"> Keyboard Shortcuts </h3>
-                <div class="divider"></div>
-
-                <div class="row">
-                  <div class="col">
-                    <span class="flow-text dark_text"> Voice input: CTRL +  </span>
-                  </div>
-
-                  <div class="col s1">
-                    <span class="input-field dark_text">
-                      <select id="voice">
-                        <option value="1">A</option>
-                        <option value="2">B</option>
-                        <option value="3">C</option>
-                      </select>
-                      <!-- <label>Materialize Select</label> -->
-                    </span>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    <span class="flow-text dark_text"> Favourites: CTRL +  </span>
-                  </div>
-
-                  <div class="col s1">
-                    <span class="input-field dark_text">
-                      <select id="favourites">
-                        <option value="1">A</option>
-                        <option value="2">B</option>
-                        <option value="3">C</option>
-                      </select>
-                      <!-- <label>Materialize Select</label> -->
-                    </span>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    <span class="flow-text dark_text"> Groups: CTRL +  </span>
-                  </div>
-
-                  <div class="col s1">
-                    <span class="input-field dark_text">
-                      <select id="groups">
-                        <option value="1">A</option>
-                        <option value="2">B</option>
-                        <option value="3">C</option>
-                      </select>
-                      <!-- <label>Materialize Select</label> -->
-                    </span>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    <span class="flow-text dark_text"> Settings: CTRL +  </span>
-                  </div>
-
-                  <div class="col s1">
-                    <span class="input-field dark_text">
-                      <select id="settings">
-                        <option value="1">A</option>
-                        <option value="2">B</option>
-                        <option value="3">C</option>
-                      </select>
-                      <!-- <label>Materialize Select</label> -->
-                    </span>
-                  </div>
-                </div>
-
-              </div>
-
-            <div class="section">
-              <h3 class="dark_text"> Accessibility </h3>
-              <div class="divider"></div>
-
-              <div class="row">
-                <div class="col">
-                  <div class="switch valign-wrapper">
-                    <span class="flow-text " style="color: white">
-                      High contrast colour scheme </span>
-                      <label>
-                        <input type="checkbox" id="lever_scheme">
-                        <span class="lever"></span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    <div class="switch valign-wrapper">
-                      <span class="flow-text " style="color: white">
-                        Larger buttons </span>
-                        <label>
-                          <input type="checkbox" id="lever_buttons">
-                          <span class="lever"></span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row valign-wrapper">
-                    <div class="col">
-                      <span class="flow-text " style="color: white">
-                        Font size </span>
-                      </div>
-                      <div class="col">
-                        <div class="input-field dark_text">
-                          <select id="font_sizes">
-                            <option value="1">Large</option>
-                            <option value="2">Medium</option>
-                            <option value="3">Small</option>
-                          </select>
-                          <!-- <label>Materialize Select</label> -->
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-
-                </div>
-              </div>
-
-    <div class="modal-footer" style="background-color: #272626">
-      <a href="#!" class="modal-action modal-close waves-effect
-      waves-light btn-flat" style="color: white"> Save changes </a>
-    </div>
-
-    <div class="modal-footer" style="background-color: #272626">
-      <a href="#!" class="modal-action modal-close waves-effect
-       waves-light btn-flat" style="color: white"> Close </a>
-    </div>
-</div>
-
-<!-- ==================== GROUPS ==================== -->
-
-<div id="groups-modal" class="modal" style="background-color: #272626">
-  <div class="modal-content">
-<div class="container row">
-  <div class="input-field">
-    <input type="text"
-    id="autocomplete-input"
-    class="autocomplete"
-    style="color: white"
-    placeholder="Add new group">
-    <a class="waves-effect waves-light btn" style="background-color: #393939">
-      <i class="material-icons left">add</i>
-      New Group</a>
-
-    <!-- <label for="autocomplete-input">Autocomplete</label> -->
-  </div>
-</div>
-
-<div class="container">
-<ul class="collection with-header">
-  <li class="collection-header"><h4> Group 1
-
-<a class="waves-effect waves-light btn" style="background-color: #393939">
-      <i class="material-icons left">delete</i>
-      Remove</a>
-<a class="waves-effect waves-light btn" style="background-color: #393939">
-      <i class="material-icons left">add</i>
-      Add company</a>
-
-</h4></li>
-  <li class="collection-item">
-    <div>BP.<a href="#!" class="secondary-content">
-    <i class="material-icons" style="color: #393939">delete</i>
-    <i class="material-icons" style="color: #393939">edit</i>
-  </a></div></li>
-  <li class="collection-item">
-    <div>RDS<a href="#!" class="secondary-content">
-      <i class="material-icons" style="color: #393939">delete</i>
-      <i class="material-icons" style="color: #393939">edit</i>
-  </a></div></li>
-  <li class="collection-item">
-    <div>III<a href="#!" class="secondary-content">
-      <i class="material-icons" style="color: #393939">delete</i>
-      <i class="material-icons" style="color: #393939">edit</i>
-    </a></div></li>
-</ul>
-</div>
-</div>
-<div class="modal-footer" style="background-color: #272626">
-  <a href="#!" class="modal-action modal-close waves-effect
-   waves-light btn-flat" style="color: white"> Close </a>
-</div>
-</div>
-
-<!-- ==================== MODALS END ==================== -->
-
-</body>
-
-</html>
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+
+  <title> ChatBot </title>
+
+
+
+  <link rel="stylesheet" href="design.css" type="text/css" charset="utf-8">
+
+
+
+  <!-- http://materializecss.com/getting-started.html -->
+
+
+
+  <!-- Website is optimized for mobile -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+
+  <!-- Google Icon Font -->
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Materialize CSS file -->
+
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+
+
+  <!-- jQuery -->
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+  <!-- Materialize JavaScript file -->
+
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
+
+  <script>
+    
+    var socket = io();
+
+// HTML 5 SPEECH RECOGNITION COMPONENT SECTION
+
+    // Initialising the HTML5 speech recognition module
+    var recognition = new webkitSpeechRecognition();
+        var recognising = false;
+        var finalTranscript = '';
+        recognition.continuous = true;  // Can return multiple results, as many as possible until manually stopped
+        recognition.lang = "en-US";
+        recognition.interimResults = true;
+
+        recognition.onstart = function() {
+            recognising = true;
+        };
+        recognition.onerror = function(event) {
+            console.log(event.error);
+        };
+
+        // Performed when something has been heard by the API
+        recognition.onresult = function(event) {
+            var interimTranscript = ''; // Stores the temperary data
+            for (var i = event.resultIndex; i < event.results.length; i++) {
+                if (event.results[i].isFinal) {
+                    finalTranscript += event.results[i][0].transcript;
+                    document.getElementById('query').value = finalTranscript;
+                } else {
+                    interimTranscript += event.results[i][0].transcript;
+                }
+                document.getElementById('query').value = interimTranscript;
+            }
+            console.log(finalTranscript);
+        };
+
+        // Called to start / stop the recording process
+        function startDictation(event) {
+            if (recognising) {
+                recognition.stop();
+            }
+            finalTranscript = '';
+            recognition.start();
+            console.log('Recording started');
+        }
+
+// DIALOGFLOW COMPONENT SECTION
+
+      function sendQueryToDialogflow() {
+        var text = document.getElementById('query').value;
+        document.getElementById('query').value = "Query sent!";
+        socket.emit('send query', {query : text});
+      }
+
+  </script>
+
+</head>
+
+
+
+<body style="background-color: #272626">
+
+
+
+  <script>
+
+    $(document).ready(function() {
+
+      $('.modal').modal();
+
+    });
+
+    $(document).keyup(function(e) {
+      if(e.which == 13 && $('#query').is(':focus')) {
+          sendQueryToDialogflow();
+      }
+  });
+
+  </script>
+
+
+
+  <div class="container" style="margin-top: 30px;">
+
+    <div class="row">
+
+      <div class="center-align">
+
+        <a class="waves-effect waves-light btn modal-trigger"
+
+        style="background-color: #393939" href="#favourites-modal">
+
+          <i class="material-icons left">star</i>
+
+          Favourites
+
+        </a>
+
+        <a class="waves-effect waves-light btn modal-trigger"
+
+        style="background-color: #393939" href="#settings-modal">
+
+          <i class="material-icons">settings</i>
+
+        </a>
+
+        <a class="waves-effect waves-light btn modal-trigger"
+
+        style="background-color: #393939" href="#groups-modal">
+
+          <i class="material-icons left">list</i>
+
+          Groups
+
+        </a>
+
+      </div>
+
+    </div>
+
+    <div class="row center-align">
+
+      <div class="input-field" style="color: white;">
+
+        <input
+
+        id="query" type="text">
+
+        <label for="query">Query</label>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div id="console"
+
+  class="container z-depth-3"
+
+  style="height: 77vh;
+
+  background-color: #393939;
+
+  padding-left: 30px; padding-right: 30px;
+
+  padding-top: 10px">
+
+
+
+  <div class="row"
+
+  style="margin-bottom: 1px">
+
+  <div class="card" style="background-color: #272626">
+
+    <div class="card-content white-text">
+
+      12:03
+
+      <span class="card-title">SSE Stock Price: £1205</span>
+
+    </div>
+
+  </div>
+
+  </div>
+
+
+
+  <div class="row"
+
+  style="margin-bottom: 1px">
+
+<div class="card" style="background-color: #272626">
+
+  <div class="card-content white-text">
+
+    11:55
+
+    <span class="card-title">The news on Severn Tren seem to be positive</span>
+
+    <p><a href="#" style="font-size: 20px; text-decoration: underline">
+
+      Why Dividend Hunters Love Severn Trent Plc
+
+    </a></p>
+
+    <p><a href="#" style="font-size: 20px; text-decoration: underline">
+
+      Grab Severn Trent Plc Today With a Solid 4.41% Dividend Yield
+
+    </p></a>
+
+  </div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- ==================== MODALS ==================== -->
+
+
+
+<!-- ==================== FAVOURITES ==================== -->
+
+
+
+<div id="favourites-modal" class="modal" style="background-color: #272626">
+
+    <div class="modal-content">
+
+      <div class="container row">
+
+    <div class="input-field">
+
+      <input type="text"
+
+      id="autocomplete-input"
+
+      class="autocomplete"
+
+      style="color: white"
+
+      placeholder="Add favourite company">
+
+      <a class="waves-effect waves-light btn" style="background-color: #393939">
+
+        <i class="material-icons left">add</i>
+
+        Add</a>
+
+
+
+      <!-- <label for="autocomplete-input">Autocomplete</label> -->
+
+    </div>
+
+  </div>
+
+
+
+  <div class="container">
+
+  <ul class="collection with-header">
+
+    <li class="collection-header"><h4>Favourite Companies</h4></li>
+
+    <li class="collection-item">
+
+      <div>BP.<a href="#!" class="secondary-content">
+
+      <i class="material-icons" style="color: #393939">delete</i>
+
+      <i class="material-icons" style="color: #393939">edit</i>
+
+    </a></div></li>
+
+    <li class="collection-item">
+
+      <div>RDS<a href="#!" class="secondary-content">
+
+        <i class="material-icons" style="color: #393939">delete</i>
+
+        <i class="material-icons" style="color: #393939">edit</i>
+
+    </a></div></li>
+
+    <li class="collection-item">
+
+      <div>III<a href="#!" class="secondary-content">
+
+        <i class="material-icons" style="color: #393939">delete</i>
+
+        <i class="material-icons" style="color: #393939">edit</i>
+
+      </a></div></li>
+
+  </ul>
+
+  </div>
+
+  </div>
+
+  <div class="modal-footer" style="background-color: #272626">
+
+    <a href="#!" class="modal-action modal-close waves-effect
+
+     waves-light btn-flat" style="color: white"> Close </a>
+
+  </div>
+
+</div>
+
+
+
+
+
+<!-- ==================== SETTINGS ==================== -->
+
+
+
+<div id="settings-modal" class="modal" style="background-color: #272626">
+
+    <div class="modal-content">
+
+      <script>
+
+      $(document).ready(function() {
+
+        $('select').material_select();
+
+      });
+
+      </script>
+
+
+
+      <script>
+
+    function saveChanges() {
+
+      var settings = new Object();
+
+      if ($('#lever_changes').is(':checked')) settings.lever_changes = 'on';
+      else settings.lever_changes = 'off';
+
+      if ($('#lever_colour').is(':checked')) settings.lever_colour = 'on';
+      else settings.lever_colour = 'off';
+
+      settings.query_history = $('#query_history').val();
+      settings.voice = $('#voice option:selected').text();
+      settings.favourites = $('#favourites option:selected').text();
+      settings.groups = $('#groups option:selected').text();
+      settings.settings = $('#settings option:selected').text();
+
+      if ($('#lever_scheme').is(':checked')) settings.lever_scheme = 'on';
+      else settings.lever_scheme = 'off';
+
+      if ($('#lever_buttons').is(':checked')) settings.lever_buttons = 'on';
+      else settings.lever_buttons = 'off';
+
+      settings.font_size = $('#font_size option:selected').text();
+      socket.emit('change settings', settings);
+
+    }
+
+  </script>
+
+
+
+      <!-- <h1 class="center-align" style="color: white"> Settings </h1> -->
+
+      <div class="container">
+
+        <div class="section">
+
+          <h3 class="dark_text"> General </h3>
+
+          <div class="divider"></div>
+
+
+
+          <div class="row">
+
+            <div class="col">
+
+              <div class="switch valign-wrapper">
+
+                <span class="flow-text " style="color: white">
+
+                  Prompt about important changes </span>
+
+                  <label>
+
+                    <input type="checkbox" id="lever_changes">
+
+                    <span class="lever"></span>
+
+                  </label>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
+            <div class="row">
+
+              <div class="col">
+
+                <div class="switch valign-wrapper">
+
+                  <span class="flow-text " style="color: white">
+
+                    Dark colour scheme </span>
+
+                    <label>
+
+                      <input type="checkbox" id="lever_colour">
+
+                      <span class="lever"></span>
+
+                    </label>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+
+              <div class="row valign-wrapper">
+
+                <div class="col">
+
+                  <span class="flow-text " style="color: white">
+
+                    Days for which query history is stored </span>
+
+                  </div>
+
+
+
+                  <div class="col input-field">
+
+                    <input value="14"
+
+                    min="7"
+
+                    max="30"
+
+                    class="flow-text dark_text"
+
+                    type="number"
+
+                    id="query_history">
+
+                    <!-- <label class="active" for="first_name2">First Name</label> -->
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+
+              <div class="section">
+
+                <h3 class="dark_text"> Keyboard Shortcuts </h3>
+
+                <div class="divider"></div>
+
+
+
+                <div class="row">
+
+                  <div class="col">
+
+                    <span class="flow-text dark_text"> Voice input: CTRL +  </span>
+
+                  </div>
+
+
+
+                  <div class="col s1">
+
+                    <span class="input-field dark_text">
+
+                      <select id="voice">
+
+                        <option value="1">A</option>
+
+                        <option value="2">B</option>
+
+                        <option value="3">C</option>
+
+                      </select>
+
+                      <!-- <label>Materialize Select</label> -->
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+
+                <div class="row">
+
+                  <div class="col">
+
+                    <span class="flow-text dark_text"> Favourites: CTRL +  </span>
+
+                  </div>
+
+
+
+                  <div class="col s1">
+
+                    <span class="input-field dark_text">
+
+                      <select id="favourites">
+
+                        <option value="1">A</option>
+
+                        <option value="2">B</option>
+
+                        <option value="3">C</option>
+
+                      </select>
+
+                      <!-- <label>Materialize Select</label> -->
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+
+                <div class="row">
+
+                  <div class="col">
+
+                    <span class="flow-text dark_text"> Groups: CTRL +  </span>
+
+                  </div>
+
+
+
+                  <div class="col s1">
+
+                    <span class="input-field dark_text">
+
+                      <select id="groups">
+
+                        <option value="1">A</option>
+
+                        <option value="2">B</option>
+
+                        <option value="3">C</option>
+
+                      </select>
+
+                      <!-- <label>Materialize Select</label> -->
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+
+                <div class="row">
+
+                  <div class="col">
+
+                    <span class="flow-text dark_text"> Settings: CTRL +  </span>
+
+                  </div>
+
+
+
+                  <div class="col s1">
+
+                    <span class="input-field dark_text">
+
+                      <select id="settings">
+
+                        <option value="1">A</option>
+
+                        <option value="2">B</option>
+
+                        <option value="3">C</option>
+
+                      </select>
+
+                      <!-- <label>Materialize Select</label> -->
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+
+              </div>
+
+
+
+            <div class="section">
+
+              <h3 class="dark_text"> Accessibility </h3>
+
+              <div class="divider"></div>
+
+
+
+              <div class="row">
+
+                <div class="col">
+
+                  <div class="switch valign-wrapper">
+
+                    <span class="flow-text " style="color: white">
+
+                      High contrast colour scheme </span>
+
+                      <label>
+
+                        <input type="checkbox" id="lever_scheme">
+
+                        <span class="lever"></span>
+
+                      </label>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+
+                <div class="row">
+
+                  <div class="col">
+
+                    <div class="switch valign-wrapper">
+
+                      <span class="flow-text " style="color: white">
+
+                        Larger buttons </span>
+
+                        <label>
+
+                          <input type="checkbox" id="lever_buttons">
+
+                          <span class="lever"></span>
+
+                        </label>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+
+                  <div class="row valign-wrapper">
+
+                    <div class="col">
+
+                      <span class="flow-text " style="color: white">
+
+                        Font size </span>
+
+                      </div>
+
+                      <div class="col">
+
+                        <div class="input-field dark_text">
+
+                          <select id="font_size">
+
+                            <option value="1">Large</option>
+
+                            <option value="2">Medium</option>
+
+                            <option value="3">Small</option>
+
+                          </select>
+
+                          <!-- <label>Materialize Select</label> -->
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
+
+                  </div>
+
+
+
+                </div>
+
+              </div>
+
+
+
+    <div class="modal-footer" style="background-color: #272626">
+
+      <a href="#" onclick="saveChanges()" class="modal-action modal-close waves-effect
+
+      waves-light btn-flat" style="color: white"> Save Changes </a>
+
+    </div>
+
+
+
+    <div class="modal-footer" style="background-color: #272626">
+
+      <a href="#!" class="modal-action modal-close waves-effect
+
+       waves-light btn-flat" style="color: white"> Close </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================== GROUPS ==================== -->
+
+
+
+<div id="groups-modal" class="modal" style="background-color: #272626">
+
+  <div class="modal-content">
+
+<div class="container row">
+
+  <div class="input-field">
+
+    <input type="text"
+
+    id="autocomplete-input"
+
+    class="autocomplete"
+
+    style="color: white"
+
+    placeholder="Add new group">
+
+    <a class="waves-effect waves-light btn" style="background-color: #393939">
+
+      <i class="material-icons left">add</i>
+
+      New Group</a>
+
+
+
+    <!-- <label for="autocomplete-input">Autocomplete</label> -->
+
+  </div>
+
+</div>
+
+
+
+<div class="container">
+
+<ul class="collection with-header">
+
+  <li class="collection-header"><h4> Group 1
+
+
+
+<a class="waves-effect waves-light btn" style="background-color: #393939">
+
+      <i class="material-icons left">delete</i>
+
+      Remove</a>
+
+<a class="waves-effect waves-light btn" style="background-color: #393939">
+
+      <i class="material-icons left">add</i>
+
+      Add company</a>
+
+
+
+</h4></li>
+
+  <li class="collection-item">
+
+    <div>BP.<a href="#!" class="secondary-content">
+
+    <i class="material-icons" style="color: #393939">delete</i>
+
+    <i class="material-icons" style="color: #393939">edit</i>
+
+  </a></div></li>
+
+  <li class="collection-item">
+
+    <div>RDS<a href="#!" class="secondary-content">
+
+      <i class="material-icons" style="color: #393939">delete</i>
+
+      <i class="material-icons" style="color: #393939">edit</i>
+
+  </a></div></li>
+
+  <li class="collection-item">
+
+    <div>III<a href="#!" class="secondary-content">
+
+      <i class="material-icons" style="color: #393939">delete</i>
+
+      <i class="material-icons" style="color: #393939">edit</i>
+
+    </a></div></li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div class="modal-footer" style="background-color: #272626">
+
+  <a href="#!" class="modal-action modal-close waves-effect
+
+   waves-light btn-flat" style="color: white"> Close </a>
+
+</div>
+
+</div>
+
+
+
+<!-- ==================== MODALS END ==================== -->
+
+
+
+</body>
+
+
+
+</html>
+

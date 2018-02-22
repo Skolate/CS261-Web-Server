@@ -68,11 +68,11 @@ var app = http.createServer(function (req, res) {
 var io = require('socket.io').listen(app);
 
 // function to be called which sends the client the current time.
-function sendTime() {
-    io.emit('time', {time: new Date().toJSON() });
-}
+// function sendTime() {
+//     io.emit('time', {time: new Date().toJSON() });
+// }
 
-setInterval(sendTime, 10000);
+// setInterval(sendTime, 10000);
 
 // Responds to a client connection
 io.on('connection', function(socket) {
@@ -82,17 +82,26 @@ io.on('connection', function(socket) {
 
     // Recieves the text the user has inputted as a query, and then sends the response to Dialogflow
     socket.on('send query', function(data) {
-      var query = client.textRequest(data.query, {sessionId: '10010110'});  // Sending the response
-      // If a response is recieved, then perform the function
-      query.on('response', function(response) {
-        console.log(response);
-      })
-      // If an error is recieved, run this function
-      query.on('error', function(error) {
-        console.log(error);
-      })
+        var query = client.textRequest(data.query, {sessionId: '10010110'});  // Sending the response
+        // If a response is recieved, then perform the function
+        query.on('response', function(response) {
+            console.log(response);
+        });
+        // If an error is recieved, run this function
+        query.on('error', function(error) {
+            console.log(error);
+        });
+
       query.end();
     })
+
+    // Recieves the setting changes via socket emit
+    socket.on('change settings', function(settings) {
+        console.log("data recieved");
+        // Handle the settings data here, call the java program with the correct param for running the related function
+        console.log(settings);
+    });
+
 });
 
 app.listen(8080);  //the server object listens on port 8080
