@@ -25,6 +25,7 @@
 <body style="background-color: #272626">
 
   <script>
+  // This enables modals
   $(document).ready(function() {
     $('.modal').modal();
   });
@@ -49,13 +50,37 @@
         </a>
       </div>
     </div>
-    <div class="row center-align">
+
+
+    <div class="row">
+      <div class="input-field" style="color: white;">
+        <div class="row">
+          <div class="col s1">
+            <a class="waves-effect waves-light btn"
+            style="background-color: #393939">
+              <i class="material-icons">mic</i>
+            </a>
+          </div>
+          <div class="col s11">
+              <input
+              id="query" type="text">
+                <label class="col offset-s1" for="query">Query</label>
+              </input>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- <div class="row center-align">
+      <div class="btn"></div>
       <div class="input-field" style="color: white;">
         <input
         id="query" type="text">
         <label for="query">Query</label>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <div id="console"
@@ -69,7 +94,7 @@
   style="margin-bottom: 1px">
   <div class="card" style="background-color: #272626">
     <div class="card-content white-text">
-      12:03
+      <p class="right-align"> 12:03 </p>
       <span class="card-title">SSE Stock Price: £1205</span>
     </div>
   </div>
@@ -79,7 +104,7 @@
   style="margin-bottom: 1px">
 <div class="card" style="background-color: #272626">
   <div class="card-content white-text">
-    11:55
+    <p class="right-align"> 11:55 </p>
     <span class="card-title">The news on Severn Tren seem to be positive</span>
     <p><a href="#" style="font-size: 20px; text-decoration: underline">
       Why Dividend Hunters Love Severn Trent Plc
