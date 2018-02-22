@@ -27,23 +27,38 @@ function runFile() {
         [''],   //command line parameters
         { encoding: 'utf8'}
     ).stdout.trim();
-    return output;  //System.out.println() is outputted from the java program and stored in this variable
+    return output;  // System.out.println() is outputted from the java program and stored in this variable
 }
 
-//host the server
+// Host the server
 var app = http.createServer(function (req, res) {
-    fs.readFile('./webdir/index.html', function(error, data) {      //reads file and stores data
+
+    var filePath = "";
+    var urlRequest = url.parse(req.url).pathname;
+    var temp = urlRequest.lastIndexOf(".");
+    var extension = urlRequest.substring((temp + 1));
+
+    filePath = urlRequest.replace("/", "");
+    if (filePath === "") filePath = 'index.html';
+
+    fs.readFile(filePath, function(error, data) {      // Reads file and stores data
         if (error) {
             res.writeHead(404);
             res.write(error.toString());
             res.end();
         }
         else {
-            res.writeHead(200, {
-                'Content-Type': 'text/html'
-            });    //writes the header
+            if (extension === 'html') res.writeHead(200, {'Content-Type': 'text/html'});    // Writes the header
+            else if (extension === 'css') res.writeHead(200, {'Content-Type': 'text/css'});
+            else if (extension === 'js') res.writeHead(200, {'Content-Type': 'text/javascript'});
+            else if (extension === 'woff') res.writeHead(200, {'Content-Type': 'application/font-woff'});
+            else if (extension === 'woff2') res.writeHead(200, {'Content-Type': 'application/font-woff2'});
+            else { 
+                console.log("NO CORRECT EXTENSION");
+            }
+            console.log(extension);
             res.write(data.toString());
-            res.write(runFile());   //execute function and returns html
+            //res.write(runFile());   // Execute function and returns html
             res.end();
         }
     });
