@@ -276,7 +276,7 @@
 
       placeholder="Add favourite company">
 
-      <a class="waves-effect waves-light btn" style="background-color: #393939">
+      <a id = "add_favourite" class="waves-effect waves-light btn" style="background-color: #393939">
 
         <i class="material-icons left">add</i>
 
@@ -290,11 +290,46 @@
 
   </div>
 
+  <script>
+    $(document).ready(function() {
+      var list = document.getElementById("favourites").getElementsByTagName("li");
+      for (var i = 0; i < list.length; ++i) {
+        console.log(list[i]);
+      }
 
+       // Deletes the specified favourite company on click
+      $('#favourites a').click(function(event) {
+      $(this).parent().parent().remove();
+      });
+    });
+
+    // Adding the new favourite to the table when the user presses enter
+    $(document).keyup(function(e) {
+      if(e.which == 13 && $('#autocomplete-input').is(':focus')) {
+        addFavouriteHTML();
+        // add send favourites function call here
+      }
+    });
+
+    // Adding the new favourite to the table when the user clicks the add button
+    $('#add_favourite').click(function() {
+      addFavouriteHTML();
+      // add send favourites function call here
+    });
+
+    // Adds the html to the webpage upon being called
+    function addFavouriteHTML() {
+        var userInput = $('#autocomplete-input').val();
+        var newListItem = "<li class='collection-item'><div><span>"+ userInput +"</span><a href='#!' class='secondary-content'><i class='material-icons' style='color: #393939'>delete</i></a></div></li>";
+        $('#favourites').append(newListItem);
+        $('#autocomplete-input').val(""); // Resets the user input text box to empty
+    }
+
+  </script>
 
   <div class="container">
 
-  <ul class="collection with-header">
+  <ul id="favourites" class="collection with-header">
 
     <li class="collection-header"><h4>Favourite Companies</h4></li>
 
@@ -778,10 +813,75 @@
 <!-- ==================== GROUPS ==================== -->
 
 
+<script>
+    $(document).ready(function() {
+      newGroupUpdate();
+      newCompanyUpdate();
+      groupManagement();
+    });
+
+    function groupManagement() {
+      // Creates a new group with the specified name on click
+      $('#add_new_group').click(function(event) {
+        addGroupHTML(event);
+      });
+    }
+
+    function newGroupUpdate() {
+      // Deletes the specified group on click
+      $('.group_name a.group_delete').click(function(event) {
+        $(this).parent().parent().parent().remove();
+      });
+
+      // Prompts the user to input a company name for the new entry into the group
+      $('.group_name a.add_company').click(function() {
+        $(this).parent().parent().parent().append("<li class='collection-item add_company_input'><div><input type='text' id='autocomplete-input' class='autocomplete' style='color: #393939' placeholder='Company name'><a class='waves-effect waves-light btn confirm_company' style='background-color: #393939'> <i class='material-icons left'>add</i> Confirm</a></a></div></li>");
+        $('.confirm_company').click(function(event) {
+          addCompanyToGroupHTML(event);
+          $(this).parent().find("#autocomplete-input").val("");
+        });
+      });
+
+    }
+
+    function newCompanyUpdate() {
+      // Removes the company from the group when clicked
+      $('.group_list a.secondary-content').click(function(event) {
+        $(this).parent().parent().remove();
+      });
+    }
+
+    // Adding the new favourite to the table when the user presses enter
+    $(document).keyup(function(e) {
+      if(e.which == 13 && $('#autocomplete-input').is(':focus')) {
+        addFavouriteHTML();
+        // add send favourites function call here
+      }
+    });
+
+
+    // Adds the html to the webpage upon being called
+    function addGroupHTML(event) {
+      var userInput = $(event.target).parent().find("#autocomplete-input").val();
+      $(event.target).parent().find("#autocomplete-input").val("");
+      $('#group_section_location').append("<div class='container group_list'><ul class='collection with-header'><li class='collection-header group_name'><h4> " + userInput + " <a class='waves-effect waves-light btn group_delete' style='background-color: #393939'><i class='material-icons left'>delete</i>Remove</a><a class='waves-effect waves-light btn add_company' style='background-color: #393939'><i class='material-icons left'>add</i>Add company</a></h4></li></ul></div>");
+      newGroupUpdate();
+    }
+
+    // Adds the company to the group name
+    function addCompanyToGroupHTML(event) {
+      var userInput = $(event.target).parent().find('#autocomplete-input').val();
+      var newListItem = "<li class='collection-item'><div><span>"+ userInput +"</span><a href='#!' class='secondary-content'><i class='material-icons' style='color: #393939'>delete</i></a></div></li>";
+      $(event.target).parent().parent().parent().append(newListItem);
+      $('.add_company_input').remove();
+      newCompanyUpdate();
+    }
+
+  </script>
 
 <div id="groups-modal" class="modal" style="background-color: #272626">
 
-  <div class="modal-content">
+  <div id="group_section_location" class="modal-content">
 
 <div class="container row">
 
@@ -797,7 +897,7 @@
 
     placeholder="Add new group">
 
-    <a class="waves-effect waves-light btn" style="background-color: #393939">
+    <a id="add_new_group" class="waves-effect waves-light btn" style="background-color: #393939">
 
       <i class="material-icons left">add</i>
 
@@ -813,21 +913,21 @@
 
 
 
-<div class="container">
+<div class="container group_list">
 
 <ul class="collection with-header">
 
-  <li class="collection-header"><h4> Group 1
+  <li class="collection-header group_name"><h4> Group 1
 
 
 
-<a class="waves-effect waves-light btn" style="background-color: #393939">
+<a class="waves-effect waves-light btn group_delete" style="background-color: #393939">
 
       <i class="material-icons left">delete</i>
 
       Remove</a>
 
-<a class="waves-effect waves-light btn" style="background-color: #393939">
+<a class="waves-effect waves-light btn add_company" style="background-color: #393939">
 
       <i class="material-icons left">add</i>
 
