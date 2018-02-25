@@ -86,6 +86,8 @@ io.on('connection', function(socket) {
         // If a response is recieved, then perform the function
         query.on('response', function(response) {
             console.log(response);
+            // Sending query results to the web page for displaying
+            socket.emit('receive results', response);
         });
         // If an error is recieved, run this function
         query.on('error', function(error) {
@@ -101,6 +103,7 @@ io.on('connection', function(socket) {
         // Handle the settings data here, call the java program with the correct param for running the related function
         console.log(settings);
     });
+
 
 });
 

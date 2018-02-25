@@ -117,6 +117,7 @@
     $(document).keyup(function(e) {
       if(e.which == 13 && $('#query').is(':focus')) {
           sendQueryToDialogflow();
+          $('#favourites-modal').css({"display": "block", "opacity": "1"});
       }
   });
 
@@ -130,7 +131,7 @@
 
       <div class="center-align">
 
-        <a class="waves-effect waves-light btn modal-trigger"
+        <a id="fav-click" class="waves-effect waves-light btn modal-trigger"
 
         style="background-color: #393939" href="#favourites-modal">
 
@@ -178,7 +179,35 @@
 
   </div>
 
+  <script>
 
+    function addQueryResult(data) {
+      console.log(data);
+      var html = "";
+      var time = new Date($.now());
+      var timeOfQuery = time.getHours() + ":";
+      if (time.getMinutes() < 10) timeOfQuery += "0" + time.getMinutes();
+      else timeOfQuery += time.getMinutes();
+      html += "<div class='row'";
+      html += "style='margin-bottom: 1px'>";
+      html += "<div class='card' style='background-color: #272626'>";
+      html += "<div class='card-content white-text'>";
+      html += timeOfQuery;
+      html += "<span class='card-title'>" + data.result.fulfillment.speech + "</span>";
+      html += "</div>";
+      html += "</div>";
+      html += "</div>";
+      $('#console').prepend(html);
+    }
+
+    socket.on('receive results', function(data) {
+      addQueryResult(data);
+    });
+
+    $(document).ready( function () {
+    });
+
+  </script>
 
   <div id="console"
 
@@ -294,7 +323,7 @@
     $(document).ready(function() {
       var list = document.getElementById("favourites").getElementsByTagName("li");
       for (var i = 0; i < list.length; ++i) {
-        console.log(list[i]);
+        //console.log(list[i]);
       }
 
        // Deletes the specified favourite company on click
