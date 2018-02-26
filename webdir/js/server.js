@@ -111,7 +111,7 @@ io.on('connection', function(socket) {
     socket.emit('populate groups', {groups: [{name: "Group 1", companies: ["Tesco", "BP"]}, {name: "Group 2", companies: ["Severn Tren"]}]});
 
     // Sends the current settings to the client
-    socket.emit('populate settings', { lever_changes: 'off', lever_colour: 'off', query_history: '12', voice: 'A', favourites: 'B', groups: 'C', settings: 'D', lever_scheme: 'off', lever_buttons: 'off', font_size: 'Small' });
+    socket.emit('populate settings', { lever_changes: 'on', lever_colour: 'off', query_history: '12', voice: 'A', favourites: 'B', groups: 'C', settings: 'D', lever_scheme: 'off', lever_buttons: 'off', font_size: 'Small' });
 
 });
 

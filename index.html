@@ -334,7 +334,7 @@
 
     // Adding the new favourite to the table when the user presses enter
     $(document).keyup(function(e) {
-      if(e.which == 13 && $('#autocomplete-input').is(':focus')) {
+      if(e.which == 13 && $('#favourites-modal input#autocomplete-input').is(':focus')) {
         addFavouriteHTML();
         // add send favourites function call here
       }
@@ -472,11 +472,12 @@
 
     }
 
+    // Sets all of the settings options to the values from the database
     function populateSettings(settings) {
       console.log(settings);
-      if (settings.lever_changes = "on") $('#lever_changes').prop('checked', true);
+      if (settings.lever_changes === "on") $('#lever_changes').prop('checked', true);
       else $('#lever_changes').prop('checked', false);
-      if (settings.lever_colour = "on") $('#lever_colour').prop('checked', true);
+      if (settings.lever_colour === "on") $('#lever_colour').prop('checked', true);
       else $('#lever_colour').prop('checked', false);
 
       $('#query_history').val(settings.query_history);
@@ -485,9 +486,9 @@
       $('#groups').parent().find('input').val(settings.groups);
       $('#settings').parent().find('input').val(settings.settings);
 
-      if (settings.lever_scheme = "on") $('#lever_scheme').prop('checked', true);
+      if (settings.lever_scheme === "on") $('#lever_scheme').prop('checked', true);
       else $('#lever_scheme').prop('checked', false);
-      if (settings.lever_buttons = "on") $('#lever_buttons').prop('checked', true);
+      if (settings.lever_buttons === "on") $('#lever_buttons').prop('checked', true);
       else $('#lever_buttons').prop('checked', false);
 
       $('#font_size').parent().find('input').val(settings.font_size);
@@ -900,7 +901,8 @@
       // Prompts the user to input a company name for the new entry into the group
       $('.group_name a.add_company').click(function() {
         $(this).parent().parent().parent().append("<li class='collection-item add_company_input'><div><input type='text' id='autocomplete-input' class='autocomplete' style='color: #393939' placeholder='Company name'><a class='waves-effect waves-light btn confirm_company' style='background-color: #393939'> <i class='material-icons left'>add</i> Confirm</a></a></div></li>");
-        $('.confirm_company').click(function(event) {
+        $('.confirm_company').off('click');
+        $('.confirm_company').on('click', function(event) {
           addCompanyToGroupHTML(event);
           $(this).parent().find("#autocomplete-input").val("");
         });
@@ -917,9 +919,11 @@
 
     // Adding the new favourite to the table when the user presses enter
     $(document).keyup(function(e) {
-      if(e.which == 13 && $('#autocomplete-input').is(':focus')) {
-        addFavouriteHTML();
-        // add send favourites function call here
+      if (e.which == 13 && $('#group_section_location input#autocomplete-input').is(':focus')) {
+        $('#add_new_group').trigger('click');
+      }
+      else if (e.which == 13 && $('.confirm_company').parent().find('#autocomplete-input').is(':focus')) {
+        $('.confirm_company').trigger('click');
       }
     });
 
