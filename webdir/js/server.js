@@ -53,7 +53,7 @@ var app = http.createServer(function (req, res) {
             else if (extension === 'js') res.writeHead(200, {'Content-Type': 'text/javascript'});
             else if (extension === 'woff') res.writeHead(200, {'Content-Type': 'application/font-woff'});
             else if (extension === 'woff2') res.writeHead(200, {'Content-Type': 'application/font-woff2'});
-            else { 
+            else {
                 console.log("NO CORRECT EXTENSION");
             }
             console.log(extension);
@@ -104,6 +104,14 @@ io.on('connection', function(socket) {
         console.log(settings);
     });
 
+    // Sends the current favourites to the client
+    socket.emit('populate favourites', {company: [ "Tesco", "BP" ]});
+
+    // Sends the current groups to the client
+    socket.emit('populate groups', {groups: [{name: "Group 1", companies: ["Tesco", "BP"]}, {name: "Group 2", companies: ["Severn Tren"]}]});
+
+    // Sends the current settings to the client
+    socket.emit('populate settings', { lever_changes: 'off', lever_colour: 'off', query_history: '12', voice: 'A', favourites: 'B', groups: 'C', settings: 'D', lever_scheme: 'off', lever_buttons: 'off', font_size: 'Small' });
 
 });
 

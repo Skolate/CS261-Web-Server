@@ -43,7 +43,7 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js'></script>
 
   <script>
-    
+
     var socket = io();
 
 // HTML 5 SPEECH RECOGNITION COMPONENT SECTION
@@ -114,10 +114,10 @@
 
     });
 
+    // Pressing enter while typing in the query input box triggers this function
     $(document).keyup(function(e) {
       if(e.which == 13 && $('#query').is(':focus')) {
           sendQueryToDialogflow();
-          $('#favourites-modal').css({"display": "block", "opacity": "1"});
       }
   });
 
@@ -354,6 +354,17 @@
         $('#autocomplete-input').val(""); // Resets the user input text box to empty
     }
 
+
+    // Sets the Favourites section to be populated with the correct data on start-up
+    function populateFavourites(data) {
+      for(var i = 0; i < data.company.length; i++) {
+        var currentFav = data.company[i];
+        var newListItem = "<li class='collection-item'><div><span>"+ currentFav +"</span><a href='#!' class='secondary-content'><i class='material-icons' style='color: #393939'>delete</i></a></div></li>";
+        $('#favourites').append(newListItem);
+      }
+    }
+    socket.on('populate favourites', function(data) { populateFavourites(data); });
+
   </script>
 
   <div class="container">
@@ -460,6 +471,30 @@
       socket.emit('change settings', settings);
 
     }
+
+    function populateSettings(settings) {
+      console.log(settings);
+      if (settings.lever_changes = "on") $('#lever_changes').prop('checked', true);
+      else $('#lever_changes').prop('checked', false);
+      if (settings.lever_colour = "on") $('#lever_colour').prop('checked', true);
+      else $('#lever_colour').prop('checked', false);
+
+      $('#query_history').val(settings.query_history);
+      $('#voice').parent().find('input').val(settings.voice);
+      $('#favourites').parent().find('input').val(settings.favourites);
+      $('#groups').parent().find('input').val(settings.groups);
+      $('#settings').parent().find('input').val(settings.settings);
+
+      if (settings.lever_scheme = "on") $('#lever_scheme').prop('checked', true);
+      else $('#lever_scheme').prop('checked', false);
+      if (settings.lever_buttons = "on") $('#lever_buttons').prop('checked', true);
+      else $('#lever_buttons').prop('checked', false);
+
+      $('#font_size').parent().find('input').val(settings.font_size);
+
+
+    }
+    socket.on('populate settings', function(data) { populateSettings(data); });
 
   </script>
 
@@ -906,6 +941,26 @@
       newCompanyUpdate();
     }
 
+
+    // Sets the groups section to be correctly populated with data on start-up
+    function populateGroups(data) {
+      // Iterates through current groups
+      for(var i = 0; i < data.groups.length; i++) {
+        var currentGroup = data.groups[i];
+        $('#group_section_location').append("<div class='container group_list'><ul class='collection with-header'><li class='collection-header group_name'><h4> " + currentGroup.name + " <a class='waves-effect waves-light btn group_delete' style='background-color: #393939'><i class='material-icons left'>delete</i>Remove</a><a class='waves-effect waves-light btn add_company' style='background-color: #393939'><i class='material-icons left'>add</i>Add company</a></h4></li></ul></div>");
+        newGroupUpdate();
+        // Iterates through current group's companies
+        for(var j = 0; j < currentGroup.companies.length; j++) {
+          var newListItem = "<li class='collection-item'><div><span>"+ currentGroup.companies[j] +"</span><a href='#!' class='secondary-content'><i class='material-icons' style='color: #393939'>delete</i></a></div></li>";
+          console.log(newListItem);
+          $(".group_name:last").parent().append(newListItem);
+          newCompanyUpdate();
+        }
+      }
+    }
+    socket.on('populate groups', function(data) { populateGroups(data); });
+
+
   </script>
 
 <div id="groups-modal" class="modal" style="background-color: #272626">
@@ -1023,4 +1078,3 @@
 
 
 </html>
-
