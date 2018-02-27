@@ -97,13 +97,6 @@ io.on('connection', function(socket) {
       query.end();
     })
 
-    // Recieves the setting changes via socket emit
-    socket.on('change settings', function(settings) {
-        console.log("data recieved");
-        // Handle the settings data here, call the java program with the correct param for running the related function
-        console.log(settings);
-    });
-
     // Sends the current favourites to the client
     socket.emit('populate favourites', {company: [ "Tesco", "BP" ]});
 
@@ -111,7 +104,25 @@ io.on('connection', function(socket) {
     socket.emit('populate groups', {groups: [{name: "Group 1", companies: ["Tesco", "BP"]}, {name: "Group 2", companies: ["Severn Tren"]}]});
 
     // Sends the current settings to the client
-    socket.emit('populate settings', { lever_changes: 'on', lever_colour: 'off', query_history: '12', voice: 'A', favourites: 'B', groups: 'C', settings: 'D', lever_scheme: 'off', lever_buttons: 'off', font_size: 'Small' });
+    socket.emit('populate settings',
+    //{ lever_changes: 'on', lever_colour: 'off', query_history: '12', voice: 'A', favourites: 'B', groups: 'C', settings: 'D', lever_scheme: 'off', lever_buttons: 'off', font_size: 'Small' });
+
+    // Receives the changed favourites from the client
+    socket.on('change favourites', function(favourites) {
+      console.log(favourites);
+    });
+
+    // Recieves the changed settings
+    socket.on('change settings', function(settings) {
+      console.log(settings);
+      fs.writeFileSync('user-settings.json', JSON.stringify(settings, null, 2));
+      console.log("Settings saved");
+    });
+
+    // Recieves the changed groups
+    socket.on('change groups', function(groups) {
+      console.log(groups);
+    });
 
 });
 
