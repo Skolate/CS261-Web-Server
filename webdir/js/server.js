@@ -54,9 +54,7 @@ var app = http.createServer(function (req, res) {
             else if (extension === 'woff') res.writeHead(200, {'Content-Type': 'application/font-woff'});
             else if (extension === 'woff2') res.writeHead(200, {'Content-Type': 'application/font-woff2'});
             else {
-                console.log("NO CORRECT EXTENSION");
             }
-            console.log(extension);
             res.write(data.toString());
             //res.write(runFile());   // Execute function and returns html
             res.end();
@@ -97,19 +95,10 @@ io.on('connection', function(socket) {
       query.end();
     })
 
-    // Sends the current favourites to the client
-    socket.emit('populate favourites', {company: [ "Tesco", "BP" ]});
-
-    // Sends the current groups to the client
-    socket.emit('populate groups', {groups: [{name: "Group 1", companies: ["Tesco", "BP"]}, {name: "Group 2", companies: ["Severn Tren"]}]});
-
-    // Sends the current settings to the client
-    socket.emit('populate settings',
-    //{ lever_changes: 'on', lever_colour: 'off', query_history: '12', voice: 'A', favourites: 'B', groups: 'C', settings: 'D', lever_scheme: 'off', lever_buttons: 'off', font_size: 'Small' });
-
     // Receives the changed favourites from the client
     socket.on('change favourites', function(favourites) {
       console.log(favourites);
+      fs.writeFileSync('user-favourites.json', JSON.stringify(favourites, null, 2))
     });
 
     // Recieves the changed settings
@@ -122,7 +111,20 @@ io.on('connection', function(socket) {
     // Recieves the changed groups
     socket.on('change groups', function(groups) {
       console.log(groups);
+      fs.writeFileSync('user-groups.json', JSON.stringify(groups, null, 2));
     });
+
+    // Sends the current favourites to the client
+    var rawDataFavs = fs.readFileSync('user-favourites.json');
+    socket.emit('populate favourites', JSON.parse(rawDataFavs));
+
+    // Sends the current groups to the client
+    var rawDataGroups = fs.readFileSync('user-groups.json');
+    socket.emit('populate groups', JSON.parse(rawDataGroups));
+
+    // Sends the current settings to the client
+    var rawDataSettings = fs.readFileSync('user-settings.json');
+    socket.emit('populate settings', JSON.parse(rawDataSettings));
 
 });
 

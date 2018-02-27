@@ -355,8 +355,8 @@
 
     // Sets the Favourites section to be populated with the correct data on start-up
     function populateFavourites(data) {
-      for(var i = 0; i < data.company.length; i++) {
-        var currentFav = data.company[i];
+      for(var i = 0; i < data.companies.length; i++) {
+        var currentFav = data.companies[i];
         var newListItem = "<li class='collection-item'><div><span>"+ currentFav +"</span><a href='#!' class='secondary-content'><i class='material-icons' style='color: #393939'>delete</i></a></div></li>";
         $('#favourites').append(newListItem);
       }
@@ -366,14 +366,14 @@
 
     // Gathers the current favourites and sends them to the server
     function gatherFavourites() {
-      var favourites = [];
+      var favourites = new Object();
+      favourites.companies = [];
       var list = document.getElementById("favourites").getElementsByTagName("span");
       for (var i=0; i<list.length; i++) {
         var text = list[i].innerText;
-        favourites = favourites.concat(text);
+        favourites.companies[i] = text;
       }
-      var favs = JSON.stringify(favourites);
-      socket.emit('change favourites', favs);
+      socket.emit('change favourites', favourites);
     }
 
   </script>
@@ -980,6 +980,8 @@
 
     // Gathers all current groups data and sends this to the server
     function gatherGroups() {
+      var allGroups = new Object();
+      allGroups.groups = [];
       var file = document.getElementsByClassName("groups_groups");
       for (var t = 0; t< file.length; t++) {
           var list = file[t].getElementsByTagName("h4");
@@ -993,9 +995,10 @@
                  var text_elem = elements[j].innerText;
                  group.companies.push(text_elem);
               }
-             socket.emit('change groups', JSON.stringify(group));
+             allGroups.groups[t] = group;
         }
       }
+      socket.emit('change groups', allGroups);
     }
 
   </script>
